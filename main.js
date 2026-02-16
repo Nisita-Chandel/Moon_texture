@@ -18,8 +18,21 @@ scene.add(mesh);
 const canvas = document.querySelector("canvas");
 const renderer = new THREE.WebGLRenderer({canvas});
 renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 
 const controls = new OrbitControls(camera,renderer.domElement);
+controls.enableDamping = true;
+// controls.dampingFactor = 0.4;
+controls.minAzimuthAngle = Math.PI/4;
+controls.maxAzimuthAngle = Math.PI/4;
+
+controls.minPolarAngle = Math.PI/4;
+controls.maxPolarAngle = Math.PI/1.25;
+
+controls.maxDistance = 2;
+controls.maxDistance = 10;
+
+
 const mouse = {
     x : 0,
     y : 0,
@@ -29,6 +42,14 @@ window.addEventListener("mousemove",function(e){
     mouse.x = e.clientX / this.window.innerWidth;
     mouse.y = e.clientY / this.window.innerHeight;
 })
+
+
+window.addEventListener("resize",function(e){
+camera.aspect = window.innerWidth/ this.window.innerHeight;
+renderer.setSize(this.window.innerWidth,window.innerHeight);
+camera.updateProjectionMatrix();
+})
+
 function animate(){
     window.requestAnimationFrame(animate);
     controls.update();
